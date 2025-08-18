@@ -3,19 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Mom's Store</title>
+  <title>Admin - Mom's Shop</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f7f7f7;
+      margin: 0;
+      background: #f4f4f4;
       padding: 2rem;
+    }
+    h1 {
+      color: #ff6f61;
       text-align: center;
     }
-    #login, #adminPanel {
-      max-width: 400px;
-      margin: auto;
+    form {
+      max-width: 500px;
+      margin: 1rem auto;
+      padding: 1rem;
       background: #fff;
-      padding: 1.5rem;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
@@ -23,121 +27,85 @@
       width: 100%;
       padding: 0.7rem;
       margin: 0.5rem 0;
-      font-size: 1rem;
-    }
-    #adminPanel {
-      display: none;
-      text-align: left;
-    }
-    .product {
-      display: flex;
-      justify-content: space-between;
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       border-radius: 5px;
+    }
+    button {
+      background: #ff6f61;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e85a50;
+    }
+    .products {
+      max-width: 800px;
+      margin: 2rem auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .card {
       background: #fff;
+      padding: 1rem;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card img {
+      max-width: 100%;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
+  <h1>Admin Dashboard</h1>
 
-  <!-- Login Section -->
-  <div id="login">
-    <h2>Admin Login</h2>
-    <input type="password" id="password" placeholder="Enter Password">
-    <button onclick="checkPassword()">Login</button>
-    <p id="error" style="color:red; display:none;">Incorrect password</p>
-  </div>
+  <form id="productForm">
+    <input type="text" id="name" placeholder="Product Name" required>
+    <input type="number" id="price" placeholder="Price (₦)" required>
+    <input type="text" id="img" placeholder="Image URL" required>
+    <button type="submit">Add Product</button>
+  </form>
 
-  <!-- Admin Panel -->
-  <div id="adminPanel">
-    <h1>Admin - Manage Products</h1>
-    <form id="productForm">
-      <input type="text" id="name" placeholder="Product Name" required>
-      <input type="number" id="price" placeholder="Price" required>
-      <input type="number" id="stock" placeholder="Stock Count" required>
-      <button type="submit">Add / Update Product</button>
-    </form>
-
-    <div class="product-list" id="productList"></div>
-  </div>
+  <h2 style="text-align:center;">Current Products</h2>
+  <div class="products" id="product-list"></div>
 
   <script>
-    // ---- PASSWORD PROTECTION ----
-    const ADMIN_PASSWORD = "mystore123"; // change this
-
-    function checkPassword() {
-      const entered = document.getElementById("password").value;
-      if (entered === ADMIN_PASSWORD) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("adminPanel").style.display = "block";
-      } else {
-        document.getElementById("error").style.display = "block";
-      }
-    }
-
-    // ---- PRODUCT MANAGEMENT ----
     let products = JSON.parse(localStorage.getItem("products")) || [];
 
     const form = document.getElementById("productForm");
-    const productList = document.getElementById("productList");
+    const productList = document.getElementById("product-list");
 
-    function saveProducts() {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+      const img = document.getElementById("img").value;
+
+      const newProduct = { id: Date.now(), name, price: parseInt(price), img };
+      products.push(newProduct);
       localStorage.setItem("products", JSON.stringify(products));
-    }
+
+      form.reset();
+      renderProducts();
+    });
 
     function renderProducts() {
       productList.innerHTML = "";
-      products.forEach((p, index) => {
-        const div = document.createElement("div");
-        div.classList.add("product");
-
-        div.innerHTML = `
-          <span>${p.name} - ₦${p.price} (Stock: ${p.stock})</span>
-          <div>
-            <button onclick="editProduct(${index})">Edit</button>
-            <button onclick="deleteProduct(${index})">Delete</button>
-          </div>
+      products.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <p>₦${p.price}</p>
         `;
-
-        productList.appendChild(div);
+        productList.appendChild(card);
       });
     }
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      const name = document.getElementById("name").value;
-      const price = parseFloat(document.getElementById("price").value);
-      const stock = parseInt(document.getElementById("stock").value);
-
-      const existingIndex = products.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
-
-      if (existingIndex >= 0) {
-        products[existingIndex] = { name, price, stock };
-      } else {
-        products.push({ name, price, stock });
-      }
-
-      saveProducts();
-      renderProducts();
-      form.reset();
-    });
-
-    function editProduct(index) {
-      const p = products[index];
-      document.getElementById("name").value = p.name;
-      document.getElementById("price").value = p.price;
-      document.getElementById("stock").value = p.stock;
-    }
-
-    function deleteProduct(index) {
-      products.splice(index, 1);
-      saveProducts();
-      renderProducts();
-    }
-
-    // Initial render
     renderProducts();
   </script>
 </body>
