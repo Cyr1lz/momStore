@@ -12,12 +12,13 @@
     <p>Quality products just for you ✨</p>
   </header>
 
-  <div class="container">
-    <h2>Our Products</h2>
-    <div class="products" id="product-list">
-      <!-- Products load here -->
-    </div>
+ <div class="container">
+  <h2>Our Products</h2>
+  <input type="text" id="search" placeholder="Search for products...">
+  <div class="products" id="product-list">
+    <!-- Products load here -->
   </div>
+</div>
 
   <div id="cart">
     <h3>🛒 Cart</h3>
@@ -53,6 +54,29 @@
         productList.appendChild(card);
       });
     }
+    // Search filter
+document.getElementById("search").addEventListener("input", function(e) {
+  const keyword = e.target.value.toLowerCase();
+  const filtered = products.filter(p => 
+    p.name.toLowerCase().includes(keyword)
+  );
+  displayFiltered(filtered);
+});
+
+function displayFiltered(list) {
+  productList.innerHTML = "";
+  list.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${p.img}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p class="price">₦${p.price}</p>
+      <button onclick="addToCart(${p.id})">Add to Cart</button>
+    `;
+    productList.appendChild(card);
+  });
+}
 
     function addToCart(id) {
       const product = products.find(p => p.id === id);
