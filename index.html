@@ -107,6 +107,9 @@ function displayFiltered(list) {
       const message = encodeURIComponent(`Hello, I would like to order: ${order}. Total: ₦${total.textContent}`);
       window.open(`https://wa.me/2347011374159?text=${message}`, "_blank"); // replace with mom's WhatsApp
     }
+    function toggleCart() {
+  document.getElementById("cart-panel").classList.toggle("active");
+}
 
     renderProducts();
   </script>
