@@ -7,22 +7,31 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Loader -->
-  <div id="loader">
-    <svg id="loader-svg" viewBox="0 0 100 100" width="100" height="100">
-      <path id="loader-path" 
-            d="M 10 50 H 90" 
-            stroke="#1db954" 
-            stroke-width="6" 
-            fill="none" 
-            stroke-linecap="round"/>
-    </svg>
-  </div>
+<div id="loader">
+  <svg viewBox="0 0 500 500" width="300" height="300">
+    <!-- Path for text to follow -->
+    <path id="linePath" d="M 50 250 H 450" fill="none" stroke="none"/>
+    <path id="circlePath" d="M 250,250 m -200,0 a 200,200 0 1,1 400,0 a 200,200 0 1,1 -400,0" fill="none" stroke="none"/>
 
-  <!-- Main Site -->
-  <div id="main-content" style="display:none;">
-    <!-- your shop content here -->
-  </div>
+    <!-- The text -->
+    <text font-size="32" font-family="Poppins" fill="#1db954">
+      <textPath id="loaderText" href="#linePath" startOffset="50%" text-anchor="middle">
+        Mom's Store
+      </textPath>
+    </text>
+  </svg>
+
+  <!-- Search icon (hidden at first) -->
+  <div id="searchIcon">🔍</div>
+</div>
+
+<!-- Main content -->
+<div id="main-content" style="display:none;">
+  <header>
+    <input type="text" placeholder="Search products..." id="searchBar"/>
+  </header>
+  <!-- Rest of shop -->
+</div>
   <header>
     <h1>Welcome to Mom's Shop</h1>
     <p>Quality products just for you ✨</p>
