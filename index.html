@@ -120,6 +120,24 @@ function displayFiltered(list) {
     function toggleCart() {
   document.getElementById("cart-panel").classList.toggle("active");
 }
+// Loader animation
+window.addEventListener("load", () => {
+  const loaderText = document.getElementById("loader-text");
+  const circle = document.getElementById("circle");
+  const loader = document.getElementById("loader");
+  const main = document.getElementById("main-content");
+
+  // After typing finishes (2s), show circle
+  setTimeout(() => {
+    circle.style.opacity = "1";
+  }, 2000);
+
+  // After full effect (4s), hide loader + show website
+  setTimeout(() => {
+    loader.classList.add("fade");
+    main.style.display = "block";
+  }, 4000);
+});
 
     renderProducts();
   </script>
