@@ -145,3 +145,9 @@ button:hover {
 #cart button:hover {
   background: #15923f;
 }
+/* Product grid */
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 per row */
+  gap: 1.5rem;
+}
