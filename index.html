@@ -9,13 +9,19 @@
 <body>
   <!-- Loader -->
   <div id="loader">
-    <h1 id="loader-text">Mom's Store</h1>
-    <div id="circle"></div>
+    <svg id="loader-svg" viewBox="0 0 100 100" width="100" height="100">
+      <path id="loader-path" 
+            d="M 10 50 H 90" 
+            stroke="#1db954" 
+            stroke-width="6" 
+            fill="none" 
+            stroke-linecap="round"/>
+    </svg>
   </div>
 
   <!-- Main Site -->
-  <div id="main-content" style="display: none;">
-    <!-- everything (navbar, products, etc.) goes here -->
+  <div id="main-content" style="display:none;">
+    <!-- your shop content here -->
   </div>
   <header>
     <h1>Welcome to Mom's Shop</h1>
@@ -120,25 +126,28 @@ function displayFiltered(list) {
     function toggleCart() {
   document.getElementById("cart-panel").classList.toggle("active");
 }
-// Loader animation
 window.addEventListener("load", () => {
-  const loaderText = document.getElementById("loader-text");
-  const circle = document.getElementById("circle");
+  const path = document.getElementById("loader-path");
   const loader = document.getElementById("loader");
   const main = document.getElementById("main-content");
 
-  // After typing finishes (2s), show circle
+  // Step 1: Line is drawn (already handled by CSS)
   setTimeout(() => {
-    circle.style.opacity = "1";
-  }, 2000);
+    // Step 2: Morph line into a circle
+    path.setAttribute("d", "M50 10 A40 40 0 1 1 49.9 10 Z");
+  }, 1500);
 
-  // After full effect (4s), hide loader + show website
+  setTimeout(() => {
+    // Step 3: Morph into search icon (circle with handle)
+    path.setAttribute("d", "M50 10 A40 40 0 1 1 49.9 10 Z M70 70 L90 90");
+  }, 3000);
+
+  // Step 4: Fade out loader & show site
   setTimeout(() => {
     loader.classList.add("fade");
     main.style.display = "block";
-  }, 4000);
+  }, 4500);
 });
-
     renderProducts();
   </script>
 </body>
