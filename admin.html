@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin - Mom's Shop</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>
-    <h1>Admin Dashboard</h1>
-    <p>Add and manage products</p>
+  <header class="site-header">
+    <nav class="topbar">
+      <a class="brand" href="index.html">Mom's Shop</a>
+      <a class="admin-link active" href="admin.html">Admin</a>
+    </nav>
+    <div class="hero small">
+      <h1>Admin Dashboard</h1>
+      <p>Add and manage products</p>
+    </div>
   </header>
 
-  <div class="container">
-    <form id="productForm">
+  <main class="container">
+    <form id="productForm" class="admin-form">
       <input type="text" id="name" placeholder="Product Name" required>
       <input type="number" id="price" placeholder="Price (₦)" required>
       <input type="text" id="img" placeholder="Image URL" required>
@@ -22,26 +28,26 @@
 
     <h2>Current Products</h2>
     <div class="products" id="product-list"></div>
-  </div>
+  </main>
 
   <script>
     let products = JSON.parse(localStorage.getItem("products")) || [];
-
     const form = document.getElementById("productForm");
     const productList = document.getElementById("product-list");
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      const name = document.getElementById("name").value;
-      const price = document.getElementById("price").value;
-      const img = document.getElementById("img").value;
+      const name  = document.getElementById("name").value.trim();
+      const price = parseInt(document.getElementById("price").value, 10);
+      const img   = document.getElementById("img").value.trim();
+      if (!name || !price || !img) return;
 
-      const newProduct = { id: Date.now(), name, price: parseInt(price), img };
+      const newProduct = { id: Date.now(), name, price, img };
       products.push(newProduct);
       localStorage.setItem("products", JSON.stringify(products));
-
       form.reset();
       renderProducts();
+      alert("Product added! Check the shop page.");
     });
 
     function renderProducts() {
@@ -51,8 +57,10 @@
         card.className = "card";
         card.innerHTML = `
           <img src="${p.img}" alt="${p.name}">
-          <h3>${p.name}</h3>
-          <p>₦${p.price}</p>
+          <div class="card-body">
+            <h3>${p.name}</h3>
+            <p class="price">₦${p.price}</p>
+          </div>
         `;
         productList.appendChild(card);
       });
