@@ -20,12 +20,14 @@
   </div>
 </div>
 
-  <div id="cart">
-    <h3>🛒 Cart</h3>
-    <ul id="cart-items"></ul>
-    <p><strong>Total: ₦<span id="total">0</span></strong></p>
-    <button onclick="checkout()">Checkout</button>
-  </div>
+  <button id="cart-btn" onclick="toggleCart()">🛒</button>
+
+<div id="cart-panel">
+  <h3>Your Cart</h3>
+  <ul id="cart-items"></ul>
+  <p><strong>Total: ₦<span id="total">0</span></strong></p>
+  <button onclick="checkout()">Checkout</button>
+</div>
 
   <script>
     let products = JSON.parse(localStorage.getItem("products")) || [
