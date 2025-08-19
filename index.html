@@ -15,7 +15,7 @@
   <div class="container">
     <h2>Our Products</h2>
     <div class="products" id="product-list">
-      <!-- Products will load here -->
+      <!-- Products load here -->
     </div>
   </div>
 
@@ -27,8 +27,7 @@
   </div>
 
   <script>
-    // Example products
-    const products = [
+    let products = JSON.parse(localStorage.getItem("products")) || [
       { id: 1, name: "Handmade Bag", price: 5000, img: "https://via.placeholder.com/200" },
       { id: 2, name: "African Dress", price: 12000, img: "https://via.placeholder.com/200" },
       { id: 3, name: "Beaded Necklace", price: 2500, img: "https://via.placeholder.com/200" }
@@ -40,18 +39,20 @@
     const cartItems = document.getElementById("cart-items");
     const total = document.getElementById("total");
 
-    // Render products
-    products.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${p.img}" alt="${p.name}">
-        <h3>${p.name}</h3>
-        <p class="price">₦${p.price}</p>
-        <button onclick="addToCart(${p.id})">Add to Cart</button>
-      `;
-      productList.appendChild(card);
-    });
+    function renderProducts() {
+      productList.innerHTML = "";
+      products.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <p class="price">₦${p.price}</p>
+          <button onclick="addToCart(${p.id})">Add to Cart</button>
+        `;
+        productList.appendChild(card);
+      });
+    }
 
     function addToCart(id) {
       const product = products.find(p => p.id === id);
@@ -78,9 +79,10 @@
       }
       const order = cart.map(item => `${item.name} (₦${item.price})`).join(", ");
       const message = encodeURIComponent(`Hello, I would like to order: ${order}. Total: ₦${total.textContent}`);
-      // Replace with your mom's WhatsApp number (format: 234XXXXXXXXXX)
-      window.open(`https://wa.me/2347011374159?text=${message}`, "_blank");
+      window.open(`https://wa.me/2347011374159?text=${message}`, "_blank"); // replace with mom's WhatsApp
     }
+
+    renderProducts();
   </script>
 </body>
 </html>
